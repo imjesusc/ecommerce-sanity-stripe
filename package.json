@@ -1,0 +1,20 @@
+{
+  "name": "ecommerce-sanity-stripe",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "ecommerce",
+    "ecommerce-studio"
+  ],
+  "scripts": {
+    "co": "sui-mono commit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@s-ui/mono": "^2.42.0"
+  }
+}
