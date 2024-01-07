@@ -6,7 +6,7 @@ import React from 'react'
 export default async function SlugPage ({ params}: SlugPageProps) {
   const productsData = await getProductsData()
   const product = await getProductBySlug(params.slug)
-  const { name, images, price, details } = product
+  const { images, price, name, details } = product
 
   return (
     <div className='container grid gap-20 m-auto'>

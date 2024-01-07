@@ -18,7 +18,7 @@ const {smallText, midText, largeText1, product, image, desc, buttonText} = banne
      width={500} height={500}/>
       </figure>
       <div className='mt-5'>
-        <Link href={`product/${product}`} className='rounded-lg py-2.5 px-4 bg-[#f02d34] text-white border-0 mt-10 text-lg font-medium cursor-pointer z-10'>
+        <Link href={`product/${product.toLowerCase()}`} className='rounded-lg py-2.5 px-4 bg-[#f02d34] text-white border-0 mt-10 text-lg font-medium cursor-pointer z-10'>
           {buttonText}
         </Link>
         
