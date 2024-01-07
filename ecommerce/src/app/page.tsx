@@ -1,4 +1,4 @@
-import { HeroBanner, ProductsGallery } from "@/components/organisms";
+import { FooterBanner, HeroBanner, ProductsGallery } from "@/components/organisms";
 import { getBannerData, getProductsData } from "@/utils/sanity/client";
 
 export default async function HomePage() {
@@ -12,7 +12,7 @@ export default async function HomePage() {
         <p>Speakers of many variations</p>
       </div>
      <ProductsGallery productsData={productsData ?? []} />
-   Footer Banner
+   <FooterBanner footerBannerData={bannerData ?? {}}/>
   </main>
   )
 }

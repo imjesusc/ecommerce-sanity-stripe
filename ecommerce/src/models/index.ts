@@ -1,1 +1,3 @@
-export * from './herobanner.inteface';
+export * from './footerbanner.interface';
+export * from './herobanner.interface';
+export * from './products.interface';
