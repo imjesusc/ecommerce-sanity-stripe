@@ -31,3 +31,16 @@ export async function getBannerData () {
     }`
   )
 }
+
+export async function getProductsData () {
+  return client.fetch(
+    groq`*[_type == "product"] {
+      _id,
+      "images": images[].asset->{url},
+      name,
+      slug, 
+      price,
+      details,
+      }`
+  )
+}
