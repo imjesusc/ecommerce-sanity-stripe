@@ -8,11 +8,11 @@ export const FooterBanner = ({footerBannerData}: FooterBannerProps) => {
   return (
     <div className='container m-auto py-20 px-10 bg-[#f02d34] text-white relative rounded-lg h-auto tablet:h-[400px] leading-normal w-full mt-20'>
       <div className='flex flex-col gap-5 tablet:flex-row justify-between'>
-        <div className='left'>
-        <p className='m-5'>{discount}</p>
-        <h3 className='font-extrabold text-7xl ml-6'>{largeText1}</h3>
-        <h3 className='font-extrabold text-7xl ml-6'>{largeText2}</h3>
-        <p className='m-5'>{saleTime}</p>
+        <div className='mb-4'>
+        <p>{discount}</p>
+        <h3 className='font-extrabold text-7xl'>{largeText1}</h3>
+        <h3 className='font-extrabold text-7xl'>{largeText2}</h3>
+        <p>{saleTime}</p>
         </div>
 
         <div className='max-w-[500px]'>

@@ -8,7 +8,7 @@ export const HeroBanner = ({bannerData}: HeroBannerProps) => {
 const {smallText, midText, largeText1, product, image, desc, buttonText} = bannerData
 
   return (
-    <div className='py-20 px-10 bg-gray-[#d5d5d5] rounded-lg relative h-[500px] leading-normal w-full container m-auto'>
+    <div className='py-20 px-10 bg-[#d5d5d5] rounded-lg relative h-[500px] leading-normal w-full container m-auto'>
     <div className='grid gap-1'>
       <p className='text-base tablet:text-2xl '>{smallText}</p>
       <h3 className='text-3xl tablet:text-6xl mt-1 font-bold'>{midText}</h3>

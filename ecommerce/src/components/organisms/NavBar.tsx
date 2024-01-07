@@ -4,7 +4,7 @@ import React from 'react'
 
 export const NavBar = () => {
   return (
-    <div className='container m-auto flex justify-between h-[64px] mb-4 items-center'>
+    <div className='container p-4 tablet:p-0 m-auto flex justify-between h-[64px] mb-4 items-center'>
       <p className='logo'>
         <Link href="/">Headphones</Link>
       </p>
