@@ -22,3 +22,9 @@ export interface ProductCartProps {
 export interface ProductsGalleryProps {
   productsData: Product[];
 }
+
+export interface ProductDetailsProps {
+  name: string
+  price: number
+  details: string
+}

@@ -44,3 +44,16 @@ export async function getProductsData () {
       }`
   )
 }
+
+export function getProductBySlug (slug:string) {
+  return client.fetch(
+    groq`*[_type == "product" && slug.current == "${slug}"][0] {
+      _id,
+      "images": images[].asset->{url},
+      name,
+      slug, 
+      price,
+      details,
+      }`
+  )
+}
