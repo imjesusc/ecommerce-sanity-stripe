@@ -1,6 +1,6 @@
 # ECOMMERCE-SANITY-STRIPE
 
-[View](https://ecommerce-sanity-project-phi.vercel.app/)
+[View](https://ecommerce-sanity-stripe-iamjesus.vercel.app/)
 
 ## Descripción
 
@@ -28,9 +28,9 @@ Este proyecto consiste en desarrollar un sistema de comercio electrónico (e-com
 ## Instalación
 
 ```bash
-git clone https://github.com/ecommerce-sanity-project.git
+git clone https://github.com/ecommerce-sanity-stripe.git
 
-cd ecommerce-sanity-project
+cd ecommerce-sanity-stripe
 
 pnpm install
 
