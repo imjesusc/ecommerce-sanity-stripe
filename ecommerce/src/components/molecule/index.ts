@@ -1,6 +1,7 @@
 export * from './CartProductPreview'
+export * from './IncDecField'
 export * from './ProductCart'
 export * from './ProductDetails'
 export * from './ProductNotFound'
-export { default as ProductViewer } from './ProductViewer'
+export * from './ProductViewer'
 export * from './StripePurchase'
