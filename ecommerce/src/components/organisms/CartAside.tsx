@@ -3,10 +3,10 @@ import { useCartContext } from '@/contexts/CartContext'
 import classNames from 'classnames'
 import { X } from 'lucide-react'
 import React, { useEffect } from 'react'
-import { CartProductPreview, ProductNotFound } from '../molecule'
+import { CartProductPreview, ProductNotFound, StripePurchase } from '../molecule'
 
 export const CartAside = () => {
-  const { totalQuantity, user, setShowCart, showCart, totalPrice } = useCartContext()
+  const { totalQuantity, user, setShowCart, showCart } = useCartContext()
 
   useEffect(() => {
     if (showCart) {
@@ -40,7 +40,7 @@ export const CartAside = () => {
           </button>
         </div>
 
-        <ProductNotFound cartLength={user.cart.length} />
+        {user.cart.length < 1 && <ProductNotFound />}
 
         <div className="grid gap-6 overflow-y-auto p-2">
           {user.cart.length > 0 &&
@@ -56,16 +56,7 @@ export const CartAside = () => {
             ))}
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between">
-            <p>Subtotal</p>
-            <p>${totalPrice}</p>
-          </div>
-
-          <button className="grid place-items-center bg-red-500 hover:bg-red-600 transition-colors text-white p-2 rounded-lg w-full">
-            Pay with Stripe
-          </button>
-        </div>
+        {user.cart.length > 0 && <StripePurchase />}
       </aside>
     </>
   )
