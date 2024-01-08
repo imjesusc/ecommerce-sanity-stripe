@@ -1,9 +1,10 @@
-import { HeroSucces } from '@/components/organisms'
+import React from 'react'
+import { HeroSuccess } from '@/components/organisms'
 
-const Success = () => {
+const Success = (): JSX.Element => {
   return (
-    <div className="success-wrapper">
-      <HeroSucces />
+    <div className='container m-auto'>
+      <HeroSuccess />
     </div>
   )
 }
