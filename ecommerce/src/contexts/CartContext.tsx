@@ -1,39 +1,34 @@
 'use client'
-import { Image } from '@/models'
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react'
+import { type CartItem } from '@/models/cartitem.types'
+import { type User } from '@/models/context.types'
+import React, { createContext, useContext, type ReactNode, useState } from 'react'
 import toast from 'react-hot-toast'
 
-type User = {
-  name: string
-  active: boolean
-  cart: any[]
-  purchases: any[]
-}
-
-type Item = {
-  id: string
-  name: string
-  price: number
-  image: Image
+interface ContextTypes {
+  addItemToCart: (newItem: CartItem) => void
+  incQuantity: () => void
+  decQuantity: () => void
   quantity: number
+  setQuantity: React.Dispatch<React.SetStateAction<number>>
+  totalQuantity: number
+  incItemQuantity: (newItem: CartItem) => void
+  decItemQuantity: (newItem: CartItem) => void
+  removeProductItemToCart: (id: string) => void
+  user: User
+  showCart: boolean
+  setShowCart: React.Dispatch<React.SetStateAction<boolean>>
+  totalPrice: number
+  setUser: React.Dispatch<React.SetStateAction<User>>
 }
 
-const Context = createContext<any>(null)
+const Context = createContext<ContextTypes | null>(null)
 
-export const CartContext = ({ children }: { children: ReactNode }) => {
-  // Implementar una funcionalidad de carrito:
-  // 1. Agregar artículos al carrito.
-  // 3. Comprar artículo: del carrito a las compras.
-  // 4. Vaciar carrito.
-
-  // emptyCart: Vaciar carrito.
-  // buyItem: Comprar artículo.
-  //[x] addItemToCart: Agregar artículo al carrito.
+export const CartContext = ({ children }: { children: ReactNode }): JSX.Element => {
   const [user, setUser] = useState<User>({
     name: 'imjesus',
     active: true,
     cart: [],
-    purchases: [],
+    purchases: []
   })
 
   const [quantity, setQuantity] = useState(1)
@@ -41,18 +36,18 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
   const [totalPrice, setTotalPrice] = useState(0)
   const [showCart, setShowCart] = useState(false)
 
-  const incQuantity = () => {
+  const incQuantity = (): void => {
     setQuantity((prev) => prev + 1)
   }
 
-  const decQuantity = () => {
+  const decQuantity = (): void => {
     setQuantity((prev: number) => {
       if (prev - 1 < 1) return 1
       return prev - 1
     })
   }
 
-  const getTotalQuantity = (cart: Item[]) => {
+  const getTotalQuantity = (cart: CartItem[]): number => {
     let total = 0
     cart.forEach((item) => {
       total += item.quantity
@@ -61,7 +56,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     return total
   }
 
-  const getTotalPrice = (cart: Item[]) => {
+  const getTotalPrice = (cart: CartItem[]): number => {
     let total = 0
     cart.forEach((item) => {
       total += item.price * item.quantity
@@ -70,8 +65,8 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     return total
   }
 
-  const addItemToCart = (newItem: Item) => {
-    const updatedCart = [...user.cart]
+  const addItemToCart = (newItem: CartItem): void => {
+    const updatedCart: CartItem[] = [...user.cart]
     // Buscar si el item ya existe en el carrito
     const itemIndex = updatedCart.findIndex((item) => item.id === newItem.id)
     const checkItemInCart = updatedCart.some((item) => item.id === newItem.id)
@@ -92,8 +87,8 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
 
   // const purchase = () => {}
 
-  const incItemQuantity = (newItem: Item) => {
-    const updatedCart = [...user.cart]
+  const incItemQuantity = (newItem: CartItem): void => {
+    const updatedCart: CartItem[] = [...user.cart]
     // Buscar si el item ya existe en el carrito
     const itemIndex = updatedCart.findIndex((item) => item.id === newItem.id)
     const checkItemInCart = updatedCart.some((item) => item.id === newItem.id)
@@ -102,13 +97,14 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     if (checkItemInCart) {
       updatedCart[itemIndex].quantity += 1
       setTotalPrice(getTotalPrice(updatedCart))
+      setTotalQuantity(getTotalQuantity(updatedCart))
     }
     // Retornar el carrito actualizado
     setUser({ ...user, cart: updatedCart })
   }
 
-  const decItemQuantity = (newItem: Item) => {
-    const updatedCart = [...user.cart]
+  const decItemQuantity = (newItem: CartItem): void => {
+    const updatedCart: CartItem[] = [...user.cart]
 
     const itemIndex = updatedCart.findIndex((item) => item.id === newItem.id)
     const checkItemInCart = updatedCart.some((item) => item.id === newItem.id)
@@ -118,22 +114,24 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     // Si la cantidad es menor a 1 entonces asignar la cantidad en 1
     if (updatedCart[itemIndex].quantity - 1 < 1) {
       updatedCart[itemIndex].quantity = 1
-      return setUser({ ...user, cart: updatedCart })
+      setUser({ ...user, cart: updatedCart }); return
     }
 
     updatedCart[itemIndex].quantity -= 1
 
+    setTotalQuantity(getTotalQuantity(updatedCart))
     setTotalPrice(getTotalPrice(updatedCart))
     setUser({ ...user, cart: updatedCart })
   }
 
-  const removeProductItemToCart = (id: string) => {
-    const updatedCart = [...user.cart]
+  const removeProductItemToCart = (id: string): void => {
+    const updatedCart: CartItem[] = [...user.cart]
     const checkItemInCart = updatedCart.some((item) => item.id === id)
 
     if (!checkItemInCart) return
 
     const updateItems = updatedCart.filter((item) => item.id !== id)
+    setTotalQuantity(getTotalQuantity(updateItems))
     setUser({ ...user, cart: updateItems })
   }
 
@@ -153,7 +151,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
         showCart,
         setShowCart,
         totalPrice,
-        setUser,
+        setUser
       }}
     >
       {children}
@@ -161,4 +159,4 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
   )
 }
 
-export const useCartContext = () => useContext(Context)
+export const useCartContext = (): ContextTypes => useContext(Context as React.Context<ContextTypes>)
