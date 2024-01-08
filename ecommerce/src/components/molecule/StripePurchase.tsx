@@ -1,35 +1,27 @@
 'use client'
 import { useCartContext } from '@/contexts/CartContext'
-import getStripe from '@/lib/getStripe'
 import React from 'react'
-import toast from 'react-hot-toast'
+import { Button } from '../atoms/Button'
+import { handleCheckout } from '@/lib/handleCheckout'
+import { type CartItem, type ProductToSendStripe } from '@/models'
 
-export const StripePurchase = () => {
+export const StripePurchase = (): JSX.Element => {
   const { user, totalPrice } = useCartContext()
 
-  const handleCheckout = async () => {
-    const stripe = await getStripe()
-    const apiUrl = '/api/stripe'
-    const OPTIONS = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user.cart),
+  const itemsToSend: ProductToSendStripe[] = user.cart.map((item: CartItem) => {
+    return {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: item.quantity,
+      image: item.image
     }
-    try {
-      const response = await fetch(apiUrl, OPTIONS)
+  })
 
-      if (response.status === 500) return
-
-      const data = await response.json()
-
-      toast.loading('Redirecting...')
-
-      stripe.redirectToCheckout({ sessionId: data.id })
-    } catch (error) {
-      toast.error('Something went wrong')
-    }
+  const checkout = (): void => {
+    handleCheckout(itemsToSend).catch(error => {
+      console.error('Error during checkout:', error)
+    })
   }
   return (
     <div className="flex flex-col gap-4">
@@ -38,12 +30,13 @@ export const StripePurchase = () => {
         <p>${totalPrice}</p>
       </div>
 
-      <button
-        onClick={handleCheckout}
-        className="grid place-items-center bg-red-500 hover:bg-red-600 transition-colors text-white p-2 rounded-lg w-full"
-      >
-        Pay with Stripe
-      </button>
+      <Button
+      onClick={checkout}
+        type="primary"
+        className="text-sm">
+          Pay with Stripe
+      </Button>
+
     </div>
   )
 }

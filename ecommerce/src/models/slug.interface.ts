@@ -4,7 +4,11 @@ export interface SlugPageProps {
   }
 }
 
+interface Image {
+  url: string
+}
+
 export interface ProductViewerProps {
-  imagesData: Array<{ url: string }>;
-  name: string;
+  imagesData: Image[]
+  name: string
 }

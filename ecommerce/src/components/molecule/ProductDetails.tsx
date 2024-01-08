@@ -1,18 +1,14 @@
 'use client'
 import { useCartContext } from '@/contexts/CartContext'
-import { Image } from '@/models'
-import { Minus, Plus, Star } from 'lucide-react'
+import { Star } from 'lucide-react'
 import React, { useEffect } from 'react'
+import { Button } from '../atoms/Button'
+import { handleCheckout } from '@/lib/handleCheckout'
+import { IncDecField } from '.'
+import { type ProductDetailsProps } from '@/models/productDetails.interface'
+import { type ProductToSendStripe } from '@/models'
 
-interface ProductDetailsProps {
-  name: string
-  price: number
-  details: string
-  _id: string
-  images: Image[]
-}
-
-export const ProductDetails = ({ product }: { product: ProductDetailsProps }) => {
+export const ProductDetails = ({ product }: { product: ProductDetailsProps }): JSX.Element => {
   const { incQuantity, decQuantity, quantity, setQuantity, addItemToCart } = useCartContext()
   const { name, price, details, _id, images } = product
 
@@ -20,11 +16,27 @@ export const ProductDetails = ({ product }: { product: ProductDetailsProps }) =>
     setQuantity(1)
   }, [setQuantity])
 
+  const itemToSend: ProductToSendStripe[] = [
+    {
+      id: _id,
+      name,
+      price,
+      quantity,
+      image: images[0]
+    }
+  ]
+
+  const checkout = (): void => {
+    handleCheckout(itemToSend).catch(error => {
+      console.error('Error during checkout:', error)
+    })
+  }
+
   return (
-    <div className="flex flex-col gap-3 max-w-[50%]">
-      <h1 className="text-4xl font-medium">{name}</h1>
-      <div className="text-red-500 flex">
-        <div className="flex">
+    <div className='flex flex-col gap-3 tablet:max-w-[50%]'>
+      <h1 className='text-4xl font-medium'>{name}</h1>
+      <div className='text-red-500 flex'>
+        <div className='flex'>
           {[{ liked: true }, { liked: true }, { liked: true }, { liked: true }, { liked: false }].map((item, index) => (
             <Star key={index} className={item.liked ? 'fill-red-500' : ''} />
           ))}
@@ -32,35 +44,20 @@ export const ProductDetails = ({ product }: { product: ProductDetailsProps }) =>
         <p>(10)</p>
       </div>
       <h4>Details: </h4>
-      <p className="text-gray-500">{details}</p>
-      <p className="font-bold text-red-500 text-4xl">${price}</p>
-      <div className="flex gap-4">
+      <p className='text-gray-500'>{details}</p>
+      <p className='font-bold text-red-500 text-4xl'>${price}</p>
+      <div className='flex gap-4'>
         <h3>Quantity:</h3>
-        <div className="grid grid-cols-3 place-content-center">
-          <span onClick={() => decQuantity()} className="text-center border rounded-l-lg p-2">
-            <Minus />
-          </span>
-          <span className="text-center border p-2">{quantity}</span>
-          <span
-            onClick={() => incQuantity()}
-            className="text-center border rounded-r-lg border-red-500 bg-red-500 text-white p-2"
-          >
-            <Plus />
-          </span>
-        </div>
+        <IncDecField quantity={quantity} increment={() => { incQuantity() }} decrement={() => { decQuantity() }} />
       </div>
 
-      <div className="grid grid-cols-2 gap-6 h-12 mt-4">
-        <button
-          onClick={() => addItemToCart({ id: _id, name, price, image: images[0], quantity })}
-          type="button"
-          className="rounded-lg  border hover:bg-gray-100 transition-colors"
-        >
+      <div className='grid grid-cols-2 gap-6 h-12 mt-4'>
+        <Button onClick={() => { addItemToCart({ id: _id, name, price, image: images[0], quantity }) }} type='ghost'>
           Add to cart
-        </button>
-        <button type="button" className="rounded-lg bg-red-500 text-white transition-colors hover:bg-red-600">
+        </Button>
+        <Button onClick={checkout} type='primary'>
           Buy Now
-        </button>
+        </Button>
       </div>
     </div>
   )
