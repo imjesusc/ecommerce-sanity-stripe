@@ -13,7 +13,7 @@ interface CartProductPreviewProps {
 }
 
 export const CartProductPreview = ({ id, imageUrl, name, quantity, price }: CartProductPreviewProps) => {
-  const { incItemQuantity, decItemQuantity } = useCartContext()
+  const { incItemQuantity, decItemQuantity, removeProductItemToCart } = useCartContext()
   const item = { id, name, quantity, price }
 
   return (
@@ -42,7 +42,10 @@ export const CartProductPreview = ({ id, imageUrl, name, quantity, price }: Cart
             </button>
           </div>
 
-          <button className="w-5 h-5 p-1 cursor-pointer bg-red-500 text-white rounded-full">
+          <button
+            onClick={() => removeProductItemToCart(id)}
+            className="w-5 h-5 p-1 cursor-pointer bg-red-500 text-white rounded-full"
+          >
             <X className="w-full h-full hover:scale-105" />
           </button>
         </div>

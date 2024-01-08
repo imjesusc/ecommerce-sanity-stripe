@@ -114,6 +114,16 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     setUser({ ...user, cart: updatedCart })
   }
 
+  const removeProductItemToCart = (id: string) => {
+    const updatedCart = [...user.cart]
+    const checkItemInCart = updatedCart.some((item) => item.id === id)
+
+    if (!checkItemInCart) return
+
+    const updateItems = updatedCart.filter((item) => item.id !== id)
+    setUser({ ...user, cart: updateItems })
+  }
+
   return (
     <Context.Provider
       value={{
@@ -125,6 +135,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
         totalQuantity,
         incItemQuantity,
         decItemQuantity,
+        removeProductItemToCart,
         user,
         showCart,
         setShowCart,
