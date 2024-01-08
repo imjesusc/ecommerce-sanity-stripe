@@ -1,5 +1,7 @@
 'use client'
+import { Image } from '@/models'
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 
 type User = {
   name: string
@@ -9,10 +11,11 @@ type User = {
 }
 
 type Item = {
-  productName: string
-  price: number
-  quantity: number
   id: string
+  name: string
+  price: number
+  image: Image
+  quantity: number
 }
 
 const Context = createContext<any>(null)
@@ -71,6 +74,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
 
     setTotalQuantity(getTotalQuantity(updatedCart))
     // Retornar el carrito actualizado
+    toast.success(`${newItem.quantity} ${newItem.name} added to cart.`)
     setUser({ ...user, cart: updatedCart })
     setShowCart(true)
   }
