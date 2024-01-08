@@ -1,8 +1,7 @@
 'use client'
 import { useCartContext } from '@/contexts/CartContext'
 import classNames from 'classnames'
-import { ShoppingBasket, X } from 'lucide-react'
-import Link from 'next/link'
+import { X } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { CartProductPreview, ProductNotFound } from '../molecule'
 
@@ -48,7 +47,8 @@ export const CartAside = () => {
             user.cart.map((item: any) => (
               <CartProductPreview
                 key={item.id}
-                imageUrl={item.image.url}
+                id={item.id}
+                imageUrl={item?.image?.url}
                 name={item.name}
                 quantity={item.quantity}
                 price={item.price}

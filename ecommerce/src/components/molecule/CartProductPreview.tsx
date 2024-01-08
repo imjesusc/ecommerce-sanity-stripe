@@ -1,3 +1,5 @@
+'use client'
+import { useCartContext } from '@/contexts/CartContext'
 import { Minus, Plus, X } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
@@ -7,9 +9,13 @@ interface CartProductPreviewProps {
   name: string
   quantity: number
   price: number
+  id: string
 }
 
-export const CartProductPreview = ({ imageUrl, name, quantity, price }: CartProductPreviewProps) => {
+export const CartProductPreview = ({ id, imageUrl, name, quantity, price }: CartProductPreviewProps) => {
+  const { incItemQuantity, decItemQuantity } = useCartContext()
+  const item = { id, name, quantity, price }
+
   return (
     <div className="w-full flex gap-4">
       <figure className="min-w-[150px] min-h-[150px] bg-gray-100 rounded-lg">
@@ -17,20 +23,23 @@ export const CartProductPreview = ({ imageUrl, name, quantity, price }: CartProd
       </figure>
 
       <div className="w-full flex flex-col justify-between p-2">
-        <div className="w-full flex justify-between items-center">
-          <h5 className="text-xl text-gray-600">{name}</h5>
-          <p>${price}</p>
+        <div className="w-full flex gap-3 justify-between items-center">
+          <h5 className="text-base text-gray-600">{name}</h5>
+          <p className="text-red-500 text-xl">${price}</p>
         </div>
 
         <div className="flex gap-4 w-full justify-between items-center">
           <div className="grid grid-cols-3 place-content-center">
-            <span className="text-center border rounded-l-lg p-2">
+            <button onClick={() => decItemQuantity(item)} className="text-center border rounded-l-lg p-2">
               <Minus />
-            </span>
+            </button>
             <span className="text-center border p-2">{quantity}</span>
-            <span className="text-center border rounded-r-lg border-red-500 bg-red-500 text-white p-2">
+            <button
+              onClick={() => incItemQuantity(item)}
+              className="text-center border rounded-r-lg border-red-500 bg-red-500 text-white p-2"
+            >
               <Plus />
-            </span>
+            </button>
           </div>
 
           <button className="w-5 h-5 p-1 cursor-pointer bg-red-500 text-white rounded-full">
