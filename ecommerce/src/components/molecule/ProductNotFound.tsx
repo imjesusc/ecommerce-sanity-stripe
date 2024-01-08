@@ -1,23 +1,18 @@
 import { useCartContext } from '@/contexts/CartContext'
+import classNames from 'classnames'
 import { ShoppingBasket } from 'lucide-react'
 import Link from 'next/link'
+import { buttonClass } from '../atoms/Button'
+import React from 'react'
 
-interface ProductNotFoundProps {
-  cartLength: number
-}
-
-export const ProductNotFound = () => {
+export const ProductNotFound = (): JSX.Element => {
   const { setShowCart } = useCartContext()
   return (
-    <div className="grid place-items-center gap-4 h-auto">
+    <div className="grid place-items-center gap-4 h-auto mt-40">
       <ShoppingBasket className="w-20 h-20" />
       <p>Your Shopping Bag is Empty</p>
 
-      <Link
-        onClick={() => setShowCart(false)}
-        href="/"
-        className="bg-[#f02d34] text-white hover:bg-red-500 transition-colors rounded-lg py-2.5 px-4"
-      >
+      <Link onClick={() => { setShowCart(true) }} href="/" className={classNames(buttonClass.primary)}>
         Continue shopping
       </Link>
     </div>
