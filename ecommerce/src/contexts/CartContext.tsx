@@ -38,6 +38,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
 
   const [quantity, setQuantity] = useState(1)
   const [totalQuantity, setTotalQuantity] = useState(0)
+  const [totalPrice, setTotalPrice] = useState(0)
   const [showCart, setShowCart] = useState(false)
 
   const incQuantity = () => {
@@ -60,6 +61,15 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     return total
   }
 
+  const getTotalPrice = (cart: Item[]) => {
+    let total = 0
+    cart.forEach((item) => {
+      total += item.price * item.quantity
+    })
+
+    return total
+  }
+
   const addItemToCart = (newItem: Item) => {
     const updatedCart = [...user.cart]
     // Buscar si el item ya existe en el carrito
@@ -72,6 +82,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
       updatedCart.push({ ...newItem })
     }
 
+    setTotalPrice(getTotalPrice(updatedCart))
     setTotalQuantity(getTotalQuantity(updatedCart))
     // Retornar el carrito actualizado
     toast.success(`${newItem.quantity} ${newItem.name} added to cart.`)
@@ -90,6 +101,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     // Si el item existe en el carrito, incrementar la cantidad en +1 sino agregarlo y poner la cantidad en 1
     if (checkItemInCart) {
       updatedCart[itemIndex].quantity += 1
+      setTotalPrice(getTotalPrice(updatedCart))
     }
     // Retornar el carrito actualizado
     setUser({ ...user, cart: updatedCart })
@@ -111,6 +123,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
 
     updatedCart[itemIndex].quantity -= 1
 
+    setTotalPrice(getTotalPrice(updatedCart))
     setUser({ ...user, cart: updatedCart })
   }
 
@@ -139,6 +152,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
         user,
         showCart,
         setShowCart,
+        totalPrice,
       }}
     >
       {children}
