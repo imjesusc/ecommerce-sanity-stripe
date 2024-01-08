@@ -35,6 +35,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
 
   const [quantity, setQuantity] = useState(1)
   const [totalQuantity, setTotalQuantity] = useState(0)
+  const [showCart, setShowCart] = useState(false)
 
   const incQuantity = () => {
     setQuantity((prev) => prev + 1)
@@ -71,6 +72,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     setTotalQuantity(getTotalQuantity(updatedCart))
     // Retornar el carrito actualizado
     setUser({ ...user, cart: updatedCart })
+    setShowCart(true)
   }
 
   return (
@@ -83,6 +85,8 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
         setQuantity,
         totalQuantity,
         user,
+        showCart,
+        setShowCart,
       }}
     >
       {children}
