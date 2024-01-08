@@ -9,6 +9,10 @@ env:
   NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
   NEXT_PUBLIC_SANITY_API_TOKEN: ${{ secrets.NEXT_PUBLIC_SANITY_API_TOKEN }}
 
+concurrency:
+  group: production
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main]
@@ -17,26 +21,21 @@ jobs:
   Deploy-production:
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel Previous Rebundant Builds
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          cache: npm
           node-version: 18
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install dependencies in Ecommerce Directory
         run: npm install
         working-directory: ./ecommerce
 
-      - name: Build
+      - name: Build Ecommerce
         run: npm run build
         working-directory: ./ecommerce
 

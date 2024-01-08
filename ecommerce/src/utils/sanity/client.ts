@@ -1,8 +1,8 @@
 // ./src/utils/sanity/client.ts
-import {createClient, groq} from 'next-sanity'
+import { createClient, groq } from 'next-sanity'
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID // "pv8y60vp"
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET // "production"
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
 const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2023-05-03'
 const token = process.env.NEXT_PUBLIC_SANITY_API_TOKEN
 
@@ -10,12 +10,12 @@ const client = createClient({
   projectId,
   dataset,
   apiVersion, // https://www.sanity.io/docs/api-versioning
-  useCdn: true, 
+  useCdn: true,
   token,
   perspective: 'published',
 })
 
-export async function getBannerData () {
+export async function getBannerData() {
   return client.fetch(
     groq`*[_type == "banner"][0] {
       buttonText,
@@ -28,11 +28,11 @@ export async function getBannerData () {
       saleTime,
       discount,
       "image": image.asset->url,
-    }`
+    }`,
   )
 }
 
-export async function getProductsData () {
+export async function getProductsData() {
   return client.fetch(
     groq`*[_type == "product"] {
       _id,
@@ -41,11 +41,11 @@ export async function getProductsData () {
       slug, 
       price,
       details,
-      }`
+      }`,
   )
 }
 
-export function getProductBySlug (slug:string) {
+export function getProductBySlug(slug: string) {
   return client.fetch(
     groq`*[_type == "product" && slug.current == "${slug}"][0] {
       _id,
@@ -54,6 +54,6 @@ export function getProductBySlug (slug:string) {
       slug, 
       price,
       details,
-      }`
+      }`,
   )
 }
