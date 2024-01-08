@@ -12,11 +12,11 @@ const client = createClient({
   apiVersion, // https://www.sanity.io/docs/api-versioning
   useCdn: true,
   token,
-  perspective: 'published',
+  perspective: 'published'
 })
 
-export async function getBannerData() {
-  return client.fetch(
+export async function getBannerData (): Promise<any> {
+  return await client.fetch(
     groq`*[_type == "banner"][0] {
       buttonText,
       product,
@@ -28,12 +28,12 @@ export async function getBannerData() {
       saleTime,
       discount,
       "image": image.asset->url,
-    }`,
+    }`
   )
 }
 
-export async function getProductsData() {
-  return client.fetch(
+export async function getProductsData (): Promise<any> {
+  return await client.fetch(
     groq`*[_type == "product"] {
       _id,
       "images": images[].asset->{url},
@@ -41,12 +41,12 @@ export async function getProductsData() {
       slug, 
       price,
       details,
-      }`,
+      }`
   )
 }
 
-export function getProductBySlug(slug: string) {
-  return client.fetch(
+export async function getProductBySlug (slug: string): Promise<any> {
+  return await client.fetch(
     groq`*[_type == "product" && slug.current == "${slug}"][0] {
       _id,
       "images": images[].asset->{url},
@@ -54,6 +54,6 @@ export function getProductBySlug(slug: string) {
       slug, 
       price,
       details,
-      }`,
+      }`
   )
 }
