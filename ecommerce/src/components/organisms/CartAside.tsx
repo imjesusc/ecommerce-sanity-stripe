@@ -1,17 +1,28 @@
+'use client'
 import { useCartContext } from '@/contexts/CartContext'
 import classNames from 'classnames'
 import { ShoppingBasket, X } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { CartProductPreview, ProductNotFound } from '../molecule'
 
 export const CartAside = () => {
   const { totalQuantity, user, setShowCart, showCart } = useCartContext()
 
+  useEffect(() => {
+    if (showCart) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+  }, [showCart])
+
   return (
     <>
       <div
+        onClick={() => setShowCart(false)}
         className={classNames(
-          'w-screen h-screen -z-20   right-0  fixed top-0 left-0',
+          'w-screen h-screen -z-20   right-0 cursor-pointer  fixed top-0 left-0',
           showCart ? 'z-40 bg-black/60' : '-z-20',
         )}
       ></div>
@@ -30,20 +41,20 @@ export const CartAside = () => {
           </button>
         </div>
 
-        {user.cart.length < 1 && (
-          <div className="grid place-items-center gap-4 h-auto">
-            <ShoppingBasket className="w-20 h-20" />
-            <p>Your Shopping Bag is Empty</p>
+        <ProductNotFound cartLength={user.cart.length} />
 
-            <Link
-              onClick={() => setShowCart(false)}
-              href="/"
-              className="bg-[#f02d34] text-white hover:bg-red-500 transition-colors rounded-lg py-2.5 px-4"
-            >
-              Continue shopping
-            </Link>
-          </div>
-        )}
+        <div className="grid gap-6 overflow-y-auto p-2">
+          {user.cart.length > 0 &&
+            user.cart.map((item: any) => (
+              <CartProductPreview
+                key={item.id}
+                imageUrl={item.image.url}
+                name={item.name}
+                quantity={item.quantity}
+                price={item.price}
+              />
+            ))}
+        </div>
       </aside>
     </>
   )
