@@ -79,6 +79,41 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
     setShowCart(true)
   }
 
+  // const purchase = () => {}
+
+  const incItemQuantity = (newItem: Item) => {
+    const updatedCart = [...user.cart]
+    // Buscar si el item ya existe en el carrito
+    const itemIndex = updatedCart.findIndex((item) => item.id === newItem.id)
+    const checkItemInCart = updatedCart.some((item) => item.id === newItem.id)
+
+    // Si el item existe en el carrito, incrementar la cantidad en +1 sino agregarlo y poner la cantidad en 1
+    if (checkItemInCart) {
+      updatedCart[itemIndex].quantity += 1
+    }
+    // Retornar el carrito actualizado
+    setUser({ ...user, cart: updatedCart })
+  }
+
+  const decItemQuantity = (newItem: Item) => {
+    const updatedCart = [...user.cart]
+
+    const itemIndex = updatedCart.findIndex((item) => item.id === newItem.id)
+    const checkItemInCart = updatedCart.some((item) => item.id === newItem.id)
+
+    if (!checkItemInCart) return
+
+    // Si la cantidad es menor a 1 entonces asignar la cantidad en 1
+    if (updatedCart[itemIndex].quantity - 1 < 1) {
+      updatedCart[itemIndex].quantity = 1
+      return setUser({ ...user, cart: updatedCart })
+    }
+
+    updatedCart[itemIndex].quantity -= 1
+
+    setUser({ ...user, cart: updatedCart })
+  }
+
   return (
     <Context.Provider
       value={{
@@ -88,6 +123,8 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
         quantity,
         setQuantity,
         totalQuantity,
+        incItemQuantity,
+        decItemQuantity,
         user,
         showCart,
         setShowCart,
