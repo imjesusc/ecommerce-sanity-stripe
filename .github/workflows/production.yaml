@@ -1,0 +1,53 @@
+name: Vercel production deploy
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+  NEXT_PUBLIC_STRIPE_SECRET_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_SECRET_KEY }}
+  NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+  NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
+  NEXT_PUBLIC_SANITY_API_TOKEN: ${{ secrets.NEXT_PUBLIC_SANITY_API_TOKEN }}
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  Deploy-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Rebundant Builds
+        uses: styfle/cancel-workflow-action@0.11.0
+        with:
+          access_token: ${{ github.token }}
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: npm
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./ecommerce
+
+      - name: Build
+        run: npm run build
+        working-directory: ./ecommerce
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./ecommerce
+
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./ecommerce
+
+      - name: Deploy Project Artifacts
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./ecommerce
