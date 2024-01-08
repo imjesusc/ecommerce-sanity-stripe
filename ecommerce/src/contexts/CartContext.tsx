@@ -153,6 +153,7 @@ export const CartContext = ({ children }: { children: ReactNode }) => {
         showCart,
         setShowCart,
         totalPrice,
+        setUser,
       }}
     >
       {children}

@@ -17,9 +17,11 @@
     "classnames": "2.5.1",
     "react-hot-toast": "2.4.1",
     "stripe": "14.11.0",
-    "@stripe/stripe-js": "2.2.2"
+    "@stripe/stripe-js": "2.2.2",
+    "canvas-confetti": "1.9.2"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "1.6.4",
     "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
