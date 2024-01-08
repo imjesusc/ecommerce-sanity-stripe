@@ -1,13 +1,23 @@
+"use client"
+import { useCartContext } from '@/contexts/CartContext'
 import { Minus, Plus, Star } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 interface ProductDetailsProps {
   name: string
   price: number
   details: string
+  id: string
 }
 
-export const  ProductDetails = ({name,price, details}: ProductDetailsProps) => {
+export const  ProductDetails = ({id, name,price, details}: ProductDetailsProps) => {
+  const {incQuantity, decQuantity, quantity, setQuantity, addItemToCart} = useCartContext()
+
+  useEffect(() => {
+    setQuantity(1);
+  }, [setQuantity])
+
+
   return (
     <div className="flex flex-col gap-3 max-w-[50%]">
     <h1 className='text-4xl font-medium'>{name}</h1>
@@ -25,20 +35,22 @@ export const  ProductDetails = ({name,price, details}: ProductDetailsProps) => {
     <div className="flex gap-4">
       <h3>Quantity:</h3>
       <div className="grid grid-cols-3 place-content-center">
-        <span className="text-center border rounded-l-lg p-2" >
+        <span onClick={()=> decQuantity()} 
+        className="text-center border rounded-l-lg p-2">
           <Minus />
         </span>
         <span className="text-center border p-2">
-         1
+          {quantity}
         </span>
-        <span className="text-center border rounded-r-lg border-red-500 bg-red-500 text-white p-2">
+        <span onClick={()=> incQuantity()}
+         className="text-center border rounded-r-lg border-red-500 bg-red-500 text-white p-2" >
           <Plus />
         </span>
       </div>
     </div>
 
     <div className="grid grid-cols-2 gap-6 h-12 mt-4">
-        <button type="button" className="rounded-lg  border hover:bg-gray-100 transition-colors" >
+        <button onClick={() => addItemToCart({id, name, price, quantity})} type="button" className="rounded-lg  border hover:bg-gray-100 transition-colors" >
         Add to cart
       </button>
       <button type="button" className="rounded-lg bg-red-500 text-white transition-colors hover:bg-red-600">

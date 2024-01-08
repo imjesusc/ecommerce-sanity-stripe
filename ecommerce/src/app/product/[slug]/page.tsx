@@ -6,13 +6,13 @@ import React from 'react'
 export default async function SlugPage ({ params}: SlugPageProps) {
   const productsData = await getProductsData()
   const product = await getProductBySlug(params.slug)
-  const { images, price, name, details } = product
+  const { _id, images, price, name, details } = product
 
   return (
     <div className='container grid gap-20 m-auto'>
       <div className="flex gap-20">
         <ProductViewer imagesData={images ?? []} name={name} />
-        <ProductDetails  name={name} price={price} details={details}/>
+        <ProductDetails id={_id}  name={name} price={price} details={details}/>
       </div>
 
       <div className="flex flex-col items-center gap-6">
