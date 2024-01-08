@@ -5,13 +5,7 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
   NEXT_PUBLIC_STRIPE_SECRET_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_SECRET_KEY }}
-  NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_SANITY_PROJECT_ID }}
-  NEXT_PUBLIC_SANITY_DATASET: ${{ secrets.NEXT_PUBLIC_SANITY_DATASET }}
   NEXT_PUBLIC_SANITY_API_TOKEN: ${{ secrets.NEXT_PUBLIC_SANITY_API_TOKEN }}
-
-concurrency:
-  group: production
-  cancel-in-progress: true
 
 on:
   push:
@@ -32,24 +26,24 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies in Ecommerce Directory
-        run: npm install
         working-directory: ./ecommerce
+        run: npm install
 
       - name: Build Ecommerce
-        run: npm run build
         working-directory: ./ecommerce
+        run: npm run build
 
       - name: Install Vercel CLI
         run: npm i -g vercel@latest
 
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: ./ecommerce
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project For Production
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: ./ecommerce
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy Project To Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
         working-directory: ./ecommerce
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
