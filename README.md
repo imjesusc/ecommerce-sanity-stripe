@@ -1,6 +1,12 @@
 # ECOMMERCE-SANITY-STRIPE
 
-[View](https://ecommerce-sanity-stripe-iamjesus.vercel.app/)
+[View](https://sanity-stripe-ecommerse.vercel.app/)
+
+<div style="display: flex; flex-wrap: wrap; gap:10px">
+<img src="./public/preview-2.png" alt="Vista Previa del Producto 1" style="width: 40%; height: auto">
+<img src="./public/preview-3.png" alt="Vista Previa del Producto 2" style="width: 40%; height: auto">
+<img src="./public/stripe.png" alt="Proceso de Pago con Stripe" style="width: 40%; height: auto">
+</div>
 
 ## Descripción
 
@@ -8,9 +14,9 @@ Este proyecto consiste en desarrollar un sistema de comercio electrónico (e-com
 
 ## Desarrollo
 
-![development](./dev-flowchart.png)
+![development](./public/dev-flowchart.png)
 
-![user-flowchart](./user-flowchart.png)
+![user-flowchart](./public/user-flowchart.png)
 
 ## Tecnologías
 
